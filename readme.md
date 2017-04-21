@@ -18,12 +18,12 @@ Syscover\NavTools\NavtoolsServiceProvider::class,
 
 **3 - To publish package, you must type on console**
 ```
-php artisan vendor:publish --provider="Syscover\NavTools\NavToolsServiceProvider"
+php artisan vendor:publish --provider="Syscover\Navtools\NavToolsServiceProvider"
 ```
 
 **4 - Register middlewares pulsar.navtools on file app/Http/Kernel.php add to routeMiddleware array**
 ```
-'pulsar.navtools' => \Syscover\NavTools\Middleware\NavTools::class,
+'pulsar.navtools' => \Syscover\Navtools\Middleware\NavTools::class,
 ```
 
 

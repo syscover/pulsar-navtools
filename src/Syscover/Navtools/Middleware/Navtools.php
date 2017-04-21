@@ -20,7 +20,7 @@ class Navtools
             return $next($request);
 
         // get parameter navtools from URL
-        $paramenters    = $request->route()->parameters();
+        $parameters     = $request->route()->parameters();
         $lang           = null; // language variable
         $country        = null; // country variable
 
@@ -31,16 +31,20 @@ class Navtools
         // get lang variable from parameters
         if(
             (config('pulsar.navtools.urlType') === 'lang-country' || config('pulsar.navtools.urlType') === 'lang') &&
-            isset($paramenters['lang'])
+            isset($parameters['lang']) && in_array($parameters['lang'], config('pulsar.navtools.langs'))
         )
-            $lang = $paramenters['lang'];
+        {
+            $lang = $parameters['lang'];
+        }
 
         // get country variable from parameters
         if(
             (config('pulsar.navtools.urlType') === 'lang-country' || config('pulsar.navtools.urlType') === 'country') &&
-            isset($paramenters['country'])
+            isset($parameters['country']) && in_array($parameters['country'], config('pulsar.navtools.countries'))
         )
-            $country = $paramenters['country'];
+        {
+            $country = $parameters['country'];
+        }
 
 
         //********************************************************
@@ -58,10 +62,10 @@ class Navtools
             if(count($urlSegment) !== 2)
                 throw new ParameterFormatException('Not found lang and country parameter, you need implement lang and country parameters in you URL or change NAVTOOLS_URL_TYPE parameter');
 
-            if($lang === null)
+            if($lang === null && in_array($urlSegment[0], config('pulsar.navtools.langs')))
                 $lang = $urlSegment[0];
 
-            if($country === null)
+            if($country === null && in_array($urlSegment[1], config('pulsar.navtools.countries')))
                 $country = $urlSegment[1];
         }
         elseif(
@@ -71,36 +75,54 @@ class Navtools
             )
         )
         {
-            if(config('pulsar.navtools.urlType') === 'lang')
+            if(config('pulsar.navtools.urlType') === 'lang' && in_array($request->segment(1), config('pulsar.navtools.langs')))
+            {
                 $lang = $request->segment(1);
-            elseif(config('pulsar.navtools.urlType') === 'country')
+            }
+            elseif(config('pulsar.navtools.urlType') === 'country' && in_array($request->segment(1), config('pulsar.navtools.countries')))
+            {
                 $country = $request->segment(1);
+            }
         }
+
 
         //********************************************************
         // Instance lang or country variable by cookies
         //********************************************************
-        if($lang === null && (config('pulsar.navtools.urlType') === 'lang-country' || config('pulsar.navtools.urlType') ==='lang') && $request->cookie('userLang') !== null)
+        if(
+            $lang === null &&
+            (config('pulsar.navtools.urlType') === 'lang-country' || config('pulsar.navtools.urlType') ==='lang') &&
+            $request->cookie('userLang') !== null &&
+            in_array($request->cookie('userLang'), config('pulsar.navtools.langs'))
+        )
         {
             $lang = $request->cookie('userLang');
         }
 
-        if($country === null && (config('pulsar.navtools.urlType') === 'lang-country' || config('pulsar.navtools.urlType') ==='country') && $request->cookie('userCountry') != null)
+        if(
+            $country === null &&
+            (config('pulsar.navtools.urlType') === 'lang-country' || config('pulsar.navtools.urlType') ==='country') &&
+            $request->cookie('userCountry') != null &&
+            in_array($request->cookie('userCountry'), config('pulsar.navtools.countries'))
+        )
         {
             $country = $request->cookie('userCountry');
         }
 
+
         //********************************************************
         // Instance lang or country variable by browser language
         //********************************************************
-        if($lang === null)
+        if(
+            $lang === null
+        )
         {
             // Routine to know language and get header HTTP_ACCEPT_LANGUAGE if there is this variable.
             // the bots like google don't have this variable, in this case we have to complete language data.
             // We find the language in all cases, then to know the country.
             if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']))
             {
-                $browserLang = \Syscover\NavTools\Services\NavToolsService::preferentialLanguage(config('pulsar.navtools.langs'));
+                $browserLang = \Syscover\Navtools\Services\NavtoolsService::preferentialLanguage(config('pulsar.navtools.langs'));
 
                 // instantiate browser language
                 if(in_array($browserLang, config('pulsar.navtools.langs')))
@@ -108,7 +130,12 @@ class Navtools
             }
         }
 
-        if($country === null && $lang !== null)
+        // after now browser language, get country
+        if(
+            $country === null &&
+            $lang !== null &&
+            (config('pulsar.navtools.urlType') === 'lang-country' || config('pulsar.navtools.urlType') ==='country')
+        )
         {
             // if is set locale, we get default country from locale
             if(isset(config('pulsar.navtools.countryLang')[$lang]))
@@ -118,12 +145,14 @@ class Navtools
             }
         }
 
+        
         // Check exceptions
         if($lang !== null && ! in_array($lang, config('pulsar.navtools.langs')))
         {
             Cookie::queue(Cookie::forget('userLang'));
             Cookie::queue(Cookie::forget('userCountry'));
 
+            // puede haber una url que no tenga idioma dentro dle grupo
             if(env('APP_DEBUG'))
             {
                 throw new ParameterFormatException('Variable lang has value \'' . $lang . '\', is not valid value, check NAVTOOLS_LANGS in your environment, will be a 404 error in production. You may be accessing a url without implementing the language');
