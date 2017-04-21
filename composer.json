@@ -1,0 +1,25 @@
+{
+    "name": "syscover/pulsar-navtools",
+    "description": "Navtools package",
+    "keywords": ["laravel","language","locale","set language","set country"],
+    "license": "MIT",
+    "type": "project",
+    "authors": [
+        {
+            "name": "SYSCOVER SL",
+            "email": "info@syscover.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.6.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Syscover\\Navtools\\": "src/Syscover/Navtools"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "minimum-stability": "dev"
+}
