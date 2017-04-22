@@ -145,7 +145,7 @@ class Navtools
             }
         }
 
-        
+
         // Check exceptions
         if($lang !== null && ! in_array($lang, config('pulsar.navtools.langs')))
         {
