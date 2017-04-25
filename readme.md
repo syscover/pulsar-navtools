@@ -1,4 +1,4 @@
-# NavTools package to Laravel
+# Navtools package to Laravel
 
 <a href="https://packagist.org/packages/syscover/laravel-nav-tools"><img src="https://poser.pugx.org/syscover/laravel-nav-tools/downloads" alt="Total Downloads"></a>
 <a href="https://packagist.org/packages/syscover/laravel-nav-tools"><img src="https://poser.pugx.org/syscover/laravel-nav-tools/v/stable.svg" alt="Latest Stable Version"></a>
@@ -18,12 +18,12 @@ Syscover\Navtools\NavtoolsServiceProvider::class,
 
 **3 - To publish package, you must type on console**
 ```
-php artisan vendor:publish --provider="Syscover\Navtools\NavToolsServiceProvider"
+php artisan vendor:publish --provider="Syscover\Navtools\NavtoolsServiceProvider"
 ```
 
 **4 - Register middlewares pulsar.navtools on file app/Http/Kernel.php add to routeMiddleware array**
 ```
-'pulsar.navtools' => \Syscover\Navtools\Middleware\NavTools::class,
+'pulsar.navtools' => \Syscover\Navtools\Middleware\Navtools::class,
 ```
 
 
@@ -79,7 +79,7 @@ NAVTOOLS_DEFAULT_COUNTRY=es
 ```
 
 
-### Routing with NavTools
+### Routing with Navtools
 On app\Http\routes.php file use this closure to implement routes with translation
 
 ```
@@ -177,4 +177,4 @@ change_country('us');
 
 ## License
 
-The NavTools is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+The Navtools is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
