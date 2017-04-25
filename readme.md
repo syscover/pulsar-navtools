@@ -13,7 +13,7 @@ composer require syscover/pulsar-navtools
 
 **2 - Register service provider, on file config/app.php add to providers array**
 ```
-Syscover\NavTools\NavtoolsServiceProvider::class,
+Syscover\Navtools\NavtoolsServiceProvider::class,
 ```
 
 **3 - To publish package, you must type on console**
