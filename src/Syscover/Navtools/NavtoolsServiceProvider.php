@@ -1,7 +1,7 @@
 <?php namespace Syscover\Navtools;
 
 use Illuminate\Support\ServiceProvider;
-use Syscover\NavTools\Lib\Redirector;
+use Syscover\Navtools\Lib\Redirector;
 
 class NavtoolsServiceProvider extends ServiceProvider
 {
