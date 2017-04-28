@@ -1,6 +1,6 @@
 <?php
 
-if (function_exists('route') && ! function_exists('nt_route'))
+if (! function_exists('nt_route'))
 {
     /**
      * Generate the URL to a named route.
