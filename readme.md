@@ -187,8 +187,6 @@ You can change the country with change_country helper
 change_country('us');
 ```
 
-## Helper [change_country()]
-
 ## Helper [active_route()]
 Active route is a helper for to know when any route is active, has this properties:
 * route:string|array = Route name or array of route names to target
