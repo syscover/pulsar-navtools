@@ -175,6 +175,26 @@ change_language('en');
 change_country('us');
 ```
 
+## Helper [active_route()]
+Active route is a helper for to know when any route is active, has this properties:
+* route:string|array = Route name or array of route names to target
+* calls:string default:null = If isset this variable, helper will return the indicated string or a boolean
+* firstOccurrence:float = Check that the first section of the url matches the route
+ 
+A simple case
+```
+<a class="{{ active_route('home', 'active') }}" href="{{ route('home') }}">HOME</a>
+```
+case with multiples routes
+```
+<a class="{{ active_route(['home', 'home-en', 'home-es'], 'active') }}" href="{{ route('home') }}">HOME</a>
+```
+case with nested route
+```
+<a class="{{ active_route('product', 'active', true) }}" href="{{ route('product-01') }}">PRODUCT</a>
+```
+
+
 ## License
 
 The Navtools is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).

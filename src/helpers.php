@@ -161,7 +161,7 @@ if (! function_exists('get_lang_route'))
     }
 }
 
-if (! function_exists('active_menu'))
+if (! function_exists('active_route'))
 {
     /**
      * Get user country from session.
@@ -169,12 +169,46 @@ if (! function_exists('active_menu'))
      * @param   bool        $firstOccurrence    active to find first occurrence of route, this method is valid to active menu on subsections
      * @return  boolean
      */
-    function active_menu($routeName, $firstOccurrence = false)
+    function active_route($routeNames, $class = null, $firstOccurrence = false)
     {
+        if(! is_array($routeNames))
+            $routeNames = [$routeNames];
+
+        $found = false; // found occurrence
+
         if($firstOccurrence)
-            return strpos(Request::url(), route($routeName)) === 0;
+        {
+            foreach ($routeNames as $routeName)
+            {
+                if(strpos(Request::url(), route($routeName)) !== 0)
+                {
+                    $found = true;
+                    break;
+                }
+            }
+
+            // return results
+            if($class === null)
+                return $found;
+            else
+                return $class;
+        }
         else
-            if(Request::route() !== null)
-                return Request::route()->getName() == $routeName;
+        {
+            foreach ($routeNames as $routeName)
+            {
+                if(Request::route()->getName() === $routeName)
+                {
+                    $found = true;
+                    break;
+                }
+            }
+
+            // return results
+            if($class === null)
+                return $found;
+            else
+                return $class;
+        }
     }
 }
