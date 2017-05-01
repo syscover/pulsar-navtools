@@ -191,7 +191,8 @@ if (! function_exists('active_route'))
             if($class === null)
                 return $found;
             else
-                return $class;
+                if($found)
+                    return $class;
         }
         else
         {
@@ -208,7 +209,8 @@ if (! function_exists('active_route'))
             if($class === null)
                 return $found;
             else
-                return $class;
+                if($found)
+                    return $class;
         }
     }
 }
