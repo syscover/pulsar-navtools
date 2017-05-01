@@ -38,10 +38,10 @@ if (! function_exists('change_lang'))
      * @param $lang
      * @return void
      */
-    function change_language($lang)
+    function change_lang($lang)
     {
-        \Illuminate\Support\Facades\Cookie::queue(\Illuminate\Support\Facades\Cookie::forever('userLang', strtolower($lang)));
-        session(['userLang'     => $lang]);
+        \Illuminate\Support\Facades\Cookie::queue(\Illuminate\Support\Facades\Cookie::forever('pulsar.user_lang', strtolower($lang)));
+        session(['pulsar.user_lang' => $lang]);
     }
 }
 
@@ -55,8 +55,8 @@ if (! function_exists('change_country'))
      */
     function change_country($country)
     {
-        \Illuminate\Support\Facades\Cookie::queue(\Illuminate\Support\Facades\Cookie::forever('userCountry', strtolower($country)));
-        session(['userCountry'  => $country]);
+        \Illuminate\Support\Facades\Cookie::queue(\Illuminate\Support\Facades\Cookie::forever('pulsar.user_country', strtolower($country)));
+        session(['pulsar.user_country' => $country]);
     }
 }
 
@@ -69,8 +69,8 @@ if (! function_exists('user_lang'))
      */
     function user_lang()
     {
-        return session('userLang') === null?
-            config('app.locale') : session('userLang');
+        return session('pulsar.user_lang') === null?
+            config('app.locale') : session('pulsar.user_lang');
     }
 }
 
@@ -83,8 +83,8 @@ if (! function_exists('user_country'))
      */
     function user_country()
     {
-        return session('userCountry') === null?
-            config('pulsar.navtools.defaultCountry') : session('userCountry');
+        return session('pulsar.user_country') === null?
+            config('pulsar.navtools.default_country') : session('pulsar.user_country');
     }
 }
 
@@ -133,7 +133,7 @@ if (! function_exists('get_lang_route_name'))
 if (! function_exists('get_lang_route'))
 {
     /**
-     * Return route name, given current url, depending of language
+     * Return route, given current url, depending of language
      *
      * @param   string  $lang
      * @return  string

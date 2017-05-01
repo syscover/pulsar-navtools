@@ -1,8 +1,8 @@
 # Navtools package to Laravel
 
-<a href="https://packagist.org/packages/syscover/laravel-nav-tools"><img src="https://poser.pugx.org/syscover/laravel-nav-tools/downloads" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/syscover/laravel-nav-tools"><img src="https://poser.pugx.org/syscover/laravel-nav-tools/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/syscover/laravel-nav-tools"><img src="https://poser.pugx.org/syscover/laravel-nav-tools/license.svg" alt="License"></a>
+<a href="https://packagist.org/packages/syscover/pulsar-navtools"><img src="https://poser.pugx.org/syscover/pulsar-navtools/downloads" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/syscover/pulsar-navtools"><img src="https://poser.pugx.org/syscover/pulsar-navtools/v/stable.svg" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/syscover/pulsar-navtools"><img src="https://poser.pugx.org/syscover/pulsar-navtools/license.svg" alt="License"></a>
 
 ## Installation
 
@@ -149,14 +149,19 @@ Route::group(['middleware' => ['pulsar.navtools']], function() {
 
 ```
 
-### Get values in your application
-
-You can get lang and country values with this helpers.
+## Helper [user_country()]
+Get country from user, a simple case
 ```
-user_country(); // to get country user
-user_lang(); // to get language user
+user_country(); // get country user
 ```
 
+## Helper [user_lang()]
+Get lang from user, a simple case
+```
+user_lang(); // get language user
+```
+
+## Helper [nt_route()]
 To set routes you need to add lang or country parameters depending on NAVTOOLS_URL_TYPE.
 ```
 route('routeName', ['lang' => 'en', 'country' => 'us']);
@@ -169,11 +174,20 @@ nt_route('routeName');
 
 You can use **redirect()** helper without any trouble, we have extended Laravel core so that **redirect()->route()** does the same as **nt_route()**.
 
-If you want to change the language or the country you must use this helpers
+
+## Helper [change_lang()]
+You can change the language with change_lang helper
 ```
-change_language('en');
+change_lang('en');
+```
+
+## Helper [change_country()]
+You can change the country with change_country helper
+```
 change_country('us');
 ```
+
+## Helper [change_country()]
 
 ## Helper [active_route()]
 Active route is a helper for to know when any route is active, has this properties:
@@ -192,6 +206,18 @@ case with multiples routes
 case with nested route
 ```
 <a class="{{ active_route('product', 'active', true) }}" href="{{ route('product-01') }}">PRODUCT</a>
+```
+
+## Helper [get_lang_route_name()]
+Get the route name of current route in other language
+```
+<a href="{{ route(get_lang_route_name('en')) }}">Change Lang</a>
+```
+
+## Helper [get_lang_route()]
+Get the url of current route in other language
+```
+<a href="{{ get_lang_route('en') }}">Change Lang</a>
 ```
 
 

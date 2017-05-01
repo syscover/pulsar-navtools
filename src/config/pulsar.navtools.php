@@ -23,7 +23,7 @@ return [
 	|
 	*/
 
-    'urlType' => env('NAVTOOLS_URL_TYPE', false),
+    'url_type' => env('NAVTOOLS_URL_TYPE', false),
 
     /*
 	|--------------------------------------------------------------------------
@@ -80,7 +80,7 @@ return [
     |
     */
 
-    'defaultCountry' => env('NAVTOOLS_DEFAULT_COUNTRY', 'es'),
+    'default_country' => env('NAVTOOLS_DEFAULT_COUNTRY', 'es'),
 
     /*
     |--------------------------------------------------------------------------
@@ -91,7 +91,7 @@ return [
     |
     */
 
-    'countryLang' => [
+    'country_lang' => [
         'de' => 'de',
         'en' => 'us',
         'es' => 'es',
