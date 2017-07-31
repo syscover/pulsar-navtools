@@ -140,6 +140,10 @@ if (! function_exists('get_lang_route'))
      */
     function get_lang_route($lang)
     {
+        // check that route exist
+        if(Request::route() === null)
+            return null;
+
         $route              = \Illuminate\Support\Facades\Route::getCurrentRoute();
         $parameters         = $route->parameters();
         $routeName          = $route->getName();
@@ -155,8 +159,10 @@ if (! function_exists('get_lang_route'))
             // Maybe can to be a route without lang that has other route with lang
             if(\Illuminate\Support\Facades\Route::has($routeName . '-' . $lang))
                 return nt_route($routeName . '-' . $lang, $parameters);
-            else
+            elseif(\Illuminate\Support\Facades\Route::has($routeName))
                 return nt_route($routeName, $parameters);
+            else
+                return null;
         }
     }
 }
@@ -165,14 +171,17 @@ if (! function_exists('active_route'))
 {
     /**
      * Get user country from session.
-     * @param   string      $routeName          name of route to check
+     * @param   string      $routeNames         names of routes to check
+     * @param   string      $class              class to return if route is active
      * @param   bool        $firstOccurrence    active to find first occurrence of route, this method is valid to active menu on subsections
      * @return  boolean
      */
     function active_route($routeNames, $class = null, $firstOccurrence = false)
     {
-        if(! is_array($routeNames))
-            $routeNames = [$routeNames];
+        // if doesn't has any route with the current url, Request::route() will be null
+        if(Request::route() === null) return null;
+
+        if(! is_array($routeNames)) $routeNames = [$routeNames];
 
         $found = false; // found occurrence
 
@@ -196,6 +205,10 @@ if (! function_exists('active_route'))
         }
         else
         {
+            // check that route exist
+            if(Request::route() === null)
+                return false;
+
             foreach ($routeNames as $routeName)
             {
                 if(Request::route()->getName() === $routeName)

@@ -17,6 +17,9 @@
         "psr-4": {
             "Syscover\\Navtools\\": "src/Syscover/Navtools"
         },
+        "classmap": [
+            "src/Syscover/Navtools"
+        ],
         "files": [
             "src/helpers.php"
         ]
