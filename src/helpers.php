@@ -140,7 +140,7 @@ if (! function_exists('get_lang_route'))
      */
     function get_lang_route($lang)
     {
-        // check that route exist
+        // if doesn't has any route with the current url, Request::route() will be null
         if(Request::route() === null)
             return null;
 
