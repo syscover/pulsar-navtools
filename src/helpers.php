@@ -195,13 +195,6 @@ if (! function_exists('active_route'))
                     break;
                 }
             }
-
-            // return results
-            if($class === null)
-                return $found;
-            else
-                if($found)
-                    return $class;
         }
         else
         {
@@ -217,13 +210,15 @@ if (! function_exists('active_route'))
                     break;
                 }
             }
-
-            // return results
-            if($class === null)
-                return $found;
-            else
-                if($found)
-                    return $class;
         }
+
+        // return results
+        if($class === null) {
+            return $found;
+        }
+        else
+        {
+            if($found) return $class;
+        }        
     }
 }
