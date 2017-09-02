@@ -11,17 +11,12 @@
 composer require syscover/pulsar-navtools
 ```
 
-**2 - Register service provider, on file config/app.php add to providers array**
-```
-Syscover\Navtools\NavtoolsServiceProvider::class,
-```
-
-**3 - To publish package, you must type on console**
+**2 - To publish package, you must type on console**
 ```
 php artisan vendor:publish --provider="Syscover\Navtools\NavtoolsServiceProvider"
 ```
 
-**4 - Register middlewares pulsar.navtools on file app/Http/Kernel.php add to routeMiddleware array**
+**3 - Register middlewares pulsar.navtools on file app/Http/Kernel.php add to routeMiddleware array**
 ```
 'pulsar.navtools' => \Syscover\Navtools\Middleware\Navtools::class,
 ```
