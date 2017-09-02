@@ -30,5 +30,6 @@
                 "Syscover\\Navtools\\NavtoolsServiceProvider"
             ]
         }
-    }
+    },
+    "minimum-stability": "dev"    
 }
