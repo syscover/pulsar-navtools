@@ -212,10 +212,6 @@ if (! function_exists('active_route'))
             }
         }
 
-
-        if($found)
-        {
-            return $class;
-        }
+        if($found) return $class;
     }
 }
