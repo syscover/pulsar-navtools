@@ -176,7 +176,7 @@ if (! function_exists('active_route'))
      * @param   bool        $firstOccurrence    active to find first occurrence of route, this method is valid to active menu on subsections
      * @return  boolean
      */
-    function active_route($routeNames, $class = null, $firstOccurrence = false)
+    function active_route($routeNames, $class = 'active', $firstOccurrence = false)
     {
         // if doesn't has any route with the current url, Request::route() will be null
         if(Request::route() === null) return null;
@@ -212,13 +212,10 @@ if (! function_exists('active_route'))
             }
         }
 
-        // return results
-        if($class === null) {
-            return $found;
-        }
-        else
+
+        if($found)
         {
-            if($found) return $class;
-        }        
+            return $class;
+        }
     }
 }
