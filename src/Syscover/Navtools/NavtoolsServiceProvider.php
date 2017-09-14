@@ -14,7 +14,7 @@ class NavtoolsServiceProvider extends ServiceProvider
 	{
         // register config files
         $this->publishes([
-            __DIR__ . '/../../config/pulsar.navtools.php' => config_path('pulsar.navtools.php')
+            __DIR__ . '/../../config/pulsar-navtools.php' => config_path('pulsar-navtools.php')
         ]);
 	}
 

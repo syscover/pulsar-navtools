@@ -16,7 +16,7 @@ class Navtools
     public function handle($request, Closure $next)
     {
         // if is false exit
-        if(! config('pulsar.navtools.url_type'))
+        if(! config('pulsar-navtools.url_type'))
             return $next($request);
 
         // get parameter navtools from URL
@@ -30,8 +30,8 @@ class Navtools
         //********************************************************
         // get lang variable from parameters
         if(
-            (config('pulsar.navtools.url_type') === 'lang-country' || config('pulsar.navtools.url_type') === 'lang') &&
-            isset($parameters['lang']) && in_array($parameters['lang'], config('pulsar.navtools.langs'))
+            (config('pulsar-navtools.url_type') === 'lang-country' || config('pulsar-navtools.url_type') === 'lang') &&
+            isset($parameters['lang']) && in_array($parameters['lang'], config('pulsar-navtools.langs'))
         )
         {
             $lang = $parameters['lang'];
@@ -39,8 +39,8 @@ class Navtools
 
         // get country variable from parameters
         if(
-            (config('pulsar.navtools.url_type') === 'lang-country' || config('pulsar.navtools.url_type') === 'country') &&
-            isset($parameters['country']) && in_array($parameters['country'], config('pulsar.navtools.countries'))
+            (config('pulsar-navtools.url_type') === 'lang-country' || config('pulsar-navtools.url_type') === 'country') &&
+            isset($parameters['country']) && in_array($parameters['country'], config('pulsar-navtools.countries'))
         )
         {
             $country = $parameters['country'];
@@ -51,7 +51,7 @@ class Navtools
         // Instance lang or country variable by url
         //********************************************************
         if(
-            config('pulsar.navtools.url_type') === 'lang-country' &&
+            config('pulsar-navtools.url_type') === 'lang-country' &&
             $request->segment(1) !== null &&
             ($lang === null || $country === null)
         )
@@ -62,24 +62,24 @@ class Navtools
             if(count($urlSegment) !== 2)
                 throw new ParameterFormatException('Not found lang and country parameter, you need implement lang and country parameters in you URL or change NAVTOOLS_URL_TYPE parameter');
 
-            if($lang === null && in_array($urlSegment[0], config('pulsar.navtools.langs')))
+            if($lang === null && in_array($urlSegment[0], config('pulsar-navtools.langs')))
                 $lang = $urlSegment[0];
 
-            if($country === null && in_array($urlSegment[1], config('pulsar.navtools.countries')))
+            if($country === null && in_array($urlSegment[1], config('pulsar-navtools.countries')))
                 $country = $urlSegment[1];
         }
         elseif(
             $request->segment(1) !== null && (
-                (config('pulsar.navtools.url_type') === 'lang' && $lang === null) ||
-                (config('pulsar.navtools.url_type') === 'country' && $country === null)
+                (config('pulsar-navtools.url_type') === 'lang' && $lang === null) ||
+                (config('pulsar-navtools.url_type') === 'country' && $country === null)
             )
         )
         {
-            if(config('pulsar.navtools.url_type') === 'lang' && in_array($request->segment(1), config('pulsar.navtools.langs')))
+            if(config('pulsar-navtools.url_type') === 'lang' && in_array($request->segment(1), config('pulsar-navtools.langs')))
             {
                 $lang = $request->segment(1);
             }
-            elseif(config('pulsar.navtools.url_type') === 'country' && in_array($request->segment(1), config('pulsar.navtools.countries')))
+            elseif(config('pulsar-navtools.url_type') === 'country' && in_array($request->segment(1), config('pulsar-navtools.countries')))
             {
                 $country = $request->segment(1);
             }
@@ -91,9 +91,9 @@ class Navtools
         //********************************************************
         if(
             $lang === null &&
-            (config('pulsar.navtools.url_type') === 'lang-country' || config('pulsar.navtools.url_type') ==='lang') &&
+            (config('pulsar-navtools.url_type') === 'lang-country' || config('pulsar-navtools.url_type') ==='lang') &&
             $request->cookie('pulsar.user_lang') !== null &&
-            in_array($request->cookie('pulsar.user_lang'), config('pulsar.navtools.langs'))
+            in_array($request->cookie('pulsar.user_lang'), config('pulsar-navtools.langs'))
         )
         {
             $lang = $request->cookie('pulsar.user_lang');
@@ -101,9 +101,9 @@ class Navtools
 
         if(
             $country === null &&
-            (config('pulsar.navtools.url_type') === 'lang-country' || config('pulsar.navtools.url_type') ==='country') &&
+            (config('pulsar-navtools.url_type') === 'lang-country' || config('pulsar-navtools.url_type') ==='country') &&
             $request->cookie('pulsar.user_country') != null &&
-            in_array($request->cookie('pulsar.user_country'), config('pulsar.navtools.countries'))
+            in_array($request->cookie('pulsar.user_country'), config('pulsar-navtools.countries'))
         )
         {
             $country = $request->cookie('pulsar.user_country');
@@ -122,10 +122,10 @@ class Navtools
             // We find the language in all cases, then to know the country.
             if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']))
             {
-                $browserLang = \Syscover\Navtools\Services\NavtoolsService::preferentialLanguage(config('pulsar.navtools.langs'));
+                $browserLang = \Syscover\Navtools\Services\NavtoolsService::preferentialLanguage(config('pulsar-navtools.langs'));
 
                 // instantiate browser language
-                if(in_array($browserLang, config('pulsar.navtools.langs')))
+                if(in_array($browserLang, config('pulsar-navtools.langs')))
                     $lang = $browserLang;
             }
         }
@@ -134,20 +134,20 @@ class Navtools
         if(
             $country === null &&
             $lang !== null &&
-            (config('pulsar.navtools.url_type') === 'lang-country' || config('pulsar.navtools.url_type') ==='country')
+            (config('pulsar-navtools.url_type') === 'lang-country' || config('pulsar-navtools.url_type') ==='country')
         )
         {
             // if is set locale, we get default country from locale
-            if(isset(config('pulsar.navtools.country_lang')[$lang]))
+            if(isset(config('pulsar-navtools.country_lang')[$lang]))
             {
                 // in the case we take the country as default language
-                $country = config('pulsar.navtools.country_lang')[$lang];
+                $country = config('pulsar-navtools.country_lang')[$lang];
             }
         }
 
 
         // Check exceptions
-        if($lang !== null && ! in_array($lang, config('pulsar.navtools.langs')))
+        if($lang !== null && ! in_array($lang, config('pulsar-navtools.langs')))
         {
             Cookie::queue(Cookie::forget('pulsar.user_lang'));
             Cookie::queue(Cookie::forget('pulsar.user_country'));
@@ -165,13 +165,13 @@ class Navtools
 
         // Get resource from countries,
         // you can need load countries from other config file
-        if(config('pulsar.navtools.resource') === 'env')
+        if(config('pulsar-navtools.resource') === 'env')
         {
-            $countries = collect(config('pulsar.navtools.countries'));
+            $countries = collect(config('pulsar-navtools.countries'));
         }
         else
         {
-            $countries = collect(config(config('pulsar.navtools.resource')))->flatten();
+            $countries = collect(config(config('pulsar-navtools.resource')))->flatten();
         }
 
         // We make sure to convert the entire array to lowercase
@@ -193,16 +193,16 @@ class Navtools
         //****************
         // Set sessions
         //****************
-        if (config('pulsar.navtools.url_type') === 'lang-country')
+        if (config('pulsar-navtools.url_type') === 'lang-country')
         {
             session(['pulsar.user_lang'     => $lang]);
             session(['pulsar.user_country'  => $country]);
         }
-        elseif(config('pulsar.navtools.url_type') === 'lang')
+        elseif(config('pulsar-navtools.url_type') === 'lang')
         {
             session(['pulsar.user_lang' => $lang]);
         }
-        elseif(config('pulsar.navtools.url_type') === 'country')
+        elseif(config('pulsar-navtools.url_type') === 'country')
         {
             session(['pulsar.user_country' => $country]);
         }
@@ -211,8 +211,8 @@ class Navtools
         // Set application language
         //**********************************
         if(
-            config('pulsar.navtools.url_type') === 'lang-country' ||
-            config('pulsar.navtools.url_type') === 'lang'
+            config('pulsar-navtools.url_type') === 'lang-country' ||
+            config('pulsar-navtools.url_type') === 'lang'
         )
         {
             App::setLocale(user_lang());

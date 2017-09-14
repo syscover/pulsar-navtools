@@ -84,7 +84,7 @@ if (! function_exists('user_country'))
     function user_country()
     {
         return session('pulsar.user_country') === null?
-            config('pulsar.navtools.default_country') : session('pulsar.user_country');
+            config('pulsar-navtools.default_country') : session('pulsar.user_country');
     }
 }
 

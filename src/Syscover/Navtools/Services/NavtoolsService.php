@@ -45,7 +45,7 @@ class NavtoolsService
             if (!empty($arr[5])) $qvalue = floatval($arr[5]);
 
             // find q-maximal language
-            if (in_array($language,$available_languages) && ($qvalue > $bestqval))
+            if (in_array($language, $available_languages) && ($qvalue > $bestqval))
             {
                 $bestlang = $language;
                 $bestqval = $qvalue;
