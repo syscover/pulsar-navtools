@@ -26,6 +26,19 @@ return [
     'url_type' => env('NAVTOOLS_URL_TYPE', false),
 
     /*
+    |--------------------------------------------------------------------------
+    | Langs resource
+    |--------------------------------------------------------------------------
+    |
+    | Set if langs resource come from NAVTOOLS_LANGS variable environment
+    | or from other config array
+    |
+    | Example Settings: 'web.langs'
+    |
+    */
+    'langs_resource' => env('NAVTOOLS_LANGS_RESOURCE', null),
+
+    /*
 	|--------------------------------------------------------------------------
 	| Languages
 	|--------------------------------------------------------------------------
@@ -43,17 +56,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Resource
+    | Countries resource
     |--------------------------------------------------------------------------
     |
     | Set if countries resource come from NAVTOOLS_COUNTRIES variable environment
     | or from other config array
     |
-    | Example Settings: 'env'
     | Example Settings: 'web.countries'
     |
     */
-    'resource' => env('NAVTOOLS_COUNTRIES_RESOURCE', 'env'),
+    'countries_resource' => env('NAVTOOLS_COUNTRIES_RESOURCE', null),
 
     /*
     |--------------------------------------------------------------------------

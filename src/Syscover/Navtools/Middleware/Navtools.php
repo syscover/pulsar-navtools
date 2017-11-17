@@ -24,6 +24,28 @@ class Navtools
         $lang           = null; // language variable
         $country        = null; // country variable
 
+        // Get resource from countries, you can need load countries from other config file
+        if(config('pulsar-navtools.countries_resource') === null)
+            $countries = collect(config('pulsar-navtools.countries'));
+        else
+            $countries = collect(config(config('pulsar-navtools.countries_resource')))->flatten();
+
+        // We make sure to convert the entire array to lowercase
+        $countries->transform(function($item, $key){
+            return strtolower($item);
+        });
+
+        // Get resource from langs, you can need load langs from other config file
+        if(config('pulsar-navtools.langs_resource') === null)
+            $langs = collect(config('pulsar-navtools.langs'));
+        else
+            $langs = collect(config(config('pulsar-navtools.langs_resource')))->flatten();
+
+        // We make sure to convert the entire array to lowercase
+        $langs->transform(function($item, $key){
+            return strtolower($item);
+        });
+
 
         //********************************************************
         // Instance lang or country variable by parameter
@@ -31,7 +53,7 @@ class Navtools
         // get lang variable from parameters
         if(
             (config('pulsar-navtools.url_type') === 'lang-country' || config('pulsar-navtools.url_type') === 'lang') &&
-            isset($parameters['lang']) && in_array($parameters['lang'], config('pulsar-navtools.langs'))
+            isset($parameters['lang']) && $langs->contains($parameters['lang'])
         )
         {
             $lang = $parameters['lang'];
@@ -40,7 +62,7 @@ class Navtools
         // get country variable from parameters
         if(
             (config('pulsar-navtools.url_type') === 'lang-country' || config('pulsar-navtools.url_type') === 'country') &&
-            isset($parameters['country']) && in_array($parameters['country'], config('pulsar-navtools.countries'))
+            isset($parameters['country']) && $countries->contains($parameters['country'])
         )
         {
             $country = $parameters['country'];
@@ -62,10 +84,10 @@ class Navtools
             if(count($urlSegment) !== 2)
                 throw new ParameterFormatException('Not found lang and country parameter, you need implement lang and country parameters in you URL or change NAVTOOLS_URL_TYPE parameter');
 
-            if($lang === null && in_array($urlSegment[0], config('pulsar-navtools.langs')))
+            if($lang === null && $langs->contains($urlSegment[0]))
                 $lang = $urlSegment[0];
 
-            if($country === null && in_array($urlSegment[1], config('pulsar-navtools.countries')))
+            if($country === null && $countries->contains($urlSegment[1]))
                 $country = $urlSegment[1];
         }
         elseif(
@@ -75,11 +97,11 @@ class Navtools
             )
         )
         {
-            if(config('pulsar-navtools.url_type') === 'lang' && in_array($request->segment(1), config('pulsar-navtools.langs')))
+            if(config('pulsar-navtools.url_type') === 'lang' && $langs->contains($request->segment(1)))
             {
                 $lang = $request->segment(1);
             }
-            elseif(config('pulsar-navtools.url_type') === 'country' && in_array($request->segment(1), config('pulsar-navtools.countries')))
+            elseif(config('pulsar-navtools.url_type') === 'country' && $countries->contains($request->segment(1)))
             {
                 $country = $request->segment(1);
             }
@@ -93,7 +115,7 @@ class Navtools
             $lang === null &&
             (config('pulsar-navtools.url_type') === 'lang-country' || config('pulsar-navtools.url_type') ==='lang') &&
             $request->cookie('pulsar.user_lang') !== null &&
-            in_array($request->cookie('pulsar.user_lang'), config('pulsar-navtools.langs'))
+            $langs->contains($request->cookie('pulsar.user_lang'))
         )
         {
             $lang = $request->cookie('pulsar.user_lang');
@@ -103,7 +125,7 @@ class Navtools
             $country === null &&
             (config('pulsar-navtools.url_type') === 'lang-country' || config('pulsar-navtools.url_type') ==='country') &&
             $request->cookie('pulsar.user_country') != null &&
-            in_array($request->cookie('pulsar.user_country'), config('pulsar-navtools.countries'))
+            $countries->contains($request->cookie('pulsar.user_country'))
         )
         {
             $country = $request->cookie('pulsar.user_country');
@@ -122,15 +144,15 @@ class Navtools
             // We find the language in all cases, then to know the country.
             if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']))
             {
-                $browserLang = \Syscover\Navtools\Services\NavtoolsService::preferentialLanguage(config('pulsar-navtools.langs'));
+                $browserLang = \Syscover\Navtools\Services\NavtoolsService::preferentialLanguage($langs->toArray());
 
                 // instantiate browser language
-                if(in_array($browserLang, config('pulsar-navtools.langs')))
+                if($langs->contains($browserLang))
                     $lang = $browserLang;
             }
         }
 
-        // after now browser language, get country
+        // after know browser language, get country
         if(
             $country === null &&
             $lang !== null &&
@@ -147,7 +169,7 @@ class Navtools
 
 
         // Check exceptions
-        if($lang !== null && ! in_array($lang, config('pulsar-navtools.langs')))
+        if($lang !== null && ! $langs->contains($lang))
         {
             Cookie::queue(Cookie::forget('pulsar.user_lang'));
             Cookie::queue(Cookie::forget('pulsar.user_country'));
@@ -162,22 +184,6 @@ class Navtools
                 abort(404);
             }
         }
-
-        // Get resource from countries,
-        // you can need load countries from other config file
-        if(config('pulsar-navtools.resource') === 'env')
-        {
-            $countries = collect(config('pulsar-navtools.countries'));
-        }
-        else
-        {
-            $countries = collect(config(config('pulsar-navtools.resource')))->flatten();
-        }
-
-        // We make sure to convert the entire array to lowercase
-        $countries->transform(function($item, $key){
-            return strtolower($item);
-        });
 
         if($country !== null && ! $countries->contains($country))
         {
