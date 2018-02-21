@@ -54,14 +54,14 @@ hrrp://mydomain.com/en-us/any-page
 
 
 ### Set NAVTOOLS_LANGS options on environment file .env
-Set countries available in your web
+Set available languages in your web
 ```
 NAVTOOLS_LANGS=en|es
 ```
 
 
 ### Set NAVTOOLS_COUNTRIES options on environment file .env
-Set countries available in your web
+Set available countries in your web
 ```
 NAVTOOLS_COUNTRIES=us|gb|es
 ```
