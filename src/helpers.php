@@ -69,7 +69,7 @@ if (! function_exists('user_lang'))
      */
     function user_lang()
     {
-        return session('pulsar.user_lang') === null?
+        return session('pulsar.user_lang') === null ?
             config('app.locale') : session('pulsar.user_lang');
     }
 }
@@ -83,7 +83,7 @@ if (! function_exists('user_country'))
      */
     function user_country()
     {
-        return session('pulsar.user_country') === null?
+        return session('pulsar.user_country') === null ?
             config('pulsar-navtools.default_country') : session('pulsar.user_country');
     }
 }
